@@ -1,0 +1,27 @@
+{
+  "name": "simpledb2level",
+  "version": "0.0.0",
+  "description": "Extract complete (or partial / incremental) SimpleDB data to a local LevelDB",
+  "main": "simpledb2level.js",
+  "scripts": {
+    "test": "faucet test/*-test.js"
+  },
+  "repository": "https://github.com/rvagg/simpledb2level.git",
+  "author": "Rod Vagg <r@va.gg>",
+  "license": "MIT",
+  "dependencies": {
+    "through2": "~0.2.3",
+    "aws-sdk": "~2.0.0-rc4",
+    "simpledb-stream": "0.0.0"
+  },
+  "peerDependencies": {
+    "level": "*",
+    "level-sublevel": "*"
+  },
+  "devDependencies": {
+    "tape": "~2.3.2",
+    "faucet": "0.0.0",
+    "rimraf": "~2.2.5",
+    "after": "~0.8.1"
+  }
+}

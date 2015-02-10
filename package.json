@@ -10,18 +10,18 @@
   "author": "Rod Vagg <r@va.gg>",
   "license": "MIT",
   "dependencies": {
-    "through2": "~0.2.3",
-    "aws-sdk": "~2.0.0-rc4",
-    "simpledb-stream": "0.0.0"
+    "aws-sdk": ">=2.1.8 <2.2.0-0",
+    "level-spaces": ">=2.0.0 <2.1.0-0",
+    "simpledb-stream": "0.0.0",
+    "through2": ">=0.6.3 <0.7.0-0"
   },
   "peerDependencies": {
-    "level": "*",
-    "level-sublevel": "*"
+    "level": ""
   },
   "devDependencies": {
-    "tape": "~2.3.2",
+    "tape": ">=2.3.2 <2.4.0-0",
     "faucet": "0.0.0",
-    "rimraf": "~2.2.5",
-    "after": "~0.8.1"
+    "rimraf": ">=2.2.5 <2.3.0-0",
+    "after": ">=0.8.1 <0.9.0-0"
   }
 }

@@ -1,7 +1,7 @@
 const AWS            = require('aws-sdk')
     , level          = require('level')
     , through2       = require('through2')
-    , sublevel       = require('level-sublevel')
+    , spaces         = require('level-spaces')
     , EventEmitter   = require('events').EventEmitter
     , simpledbStream = require('simpledb-stream')
 
@@ -44,7 +44,7 @@ function fetch (options, ee, simpledb) {
 function processDomain (domain, config, db, stream, callback) {
 
   function process (chunk, enc, callback) {
-    db.put(chunk.key, chunk.value, { valueEncoding: 'json' }, callback)
+    db.put(chunk.key, JSON.stringify(chunk.value), callback)
   }
 
   function flush (_callback) {
@@ -78,10 +78,9 @@ function simple2level (options) {
 
   var ee              = new EventEmitter()
     , simpledb        = new AWS.SimpleDB()
-    , db              = sublevel(typeof options.db == 'string'
-        ? level(options.db, { valueEncoding: 'json' })
+    , db              = typeof options.db == 'string'
+        ? level(options.db)
         : options.db
-      )
     , domains         = 0
     , finishedDomains = 0
 
@@ -90,7 +89,7 @@ function simple2level (options) {
   })
 
   ee.on('domain', function (data) {
-    var domaindb = db.sublevel(data.domain)
+    var domaindb = spaces(db, data.domain)
 
     if (typeof data.config.setupDb == 'function')
       domaindb = data.config.setupDb(domaindb)

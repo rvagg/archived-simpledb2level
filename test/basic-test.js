@@ -48,23 +48,22 @@ function removeDb (t) {
 
 
 function reconstructActualDataFromDb (t, callback) {
-  var db         = level(testdb, { valueEncoding: 'json' })
+  var db         = level(testdb)
     , actualData = {}
 
   db.readStream()
     .on('data', function (data) {
 
-      // take apart the sublevel structure and rebuild it into the test-data.json structure
-
-      var ka = data.key.split('\xff')
+      var ka    = data.key.toString().split('~')
+        , value = JSON.parse(data.value.toString())
 
       t.equal(ka.length, 3, 'correct key structure')
 
       if (!actualData[ka[1]])
         actualData[ka[1]] = []
 
-      actualData[ka[1]].push(Object.keys(data.value).reduce(function (p, c) {
-        p[c] = data.value[c]
+      actualData[ka[1]].push(Object.keys(value).reduce(function (p, c) {
+        p[c] = value[c]
         return p
       }, { Name: ka[2] }))
 
@@ -118,12 +117,9 @@ test('test sync', function (t) {
   s2l.on('error', t.fail.bind(t))
 
   s2l.on('end', function () {
-
     reconstructActualDataFromDb(t, function (err, actualData) {
-
       t.deepEqual(actualData, testData, 'data in db matches test data!')
       t.end()
-
     })
 
   })
@@ -147,8 +143,9 @@ test('test domainConfig `setupDb` option', function (t) {
     db.___put = db.put
     db.put = function (key, value) {
       var o = { Name: key }
-      Object.keys(value).forEach(function (prop) {
-        o[prop] = value[prop]
+        , oValue = JSON.parse(value)
+      Object.keys(oValue).forEach(function (prop) {
+        o[prop] = oValue[prop]
       })
       self.push(o)
       return db.___put.apply(db, arguments)

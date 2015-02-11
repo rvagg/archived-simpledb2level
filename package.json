@@ -1,6 +1,6 @@
 {
   "name": "simpledb2level",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Extract complete (or partial / incremental) SimpleDB data to a local LevelDB",
   "main": "simpledb2level.js",
   "scripts": {

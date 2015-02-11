@@ -44,6 +44,8 @@ function fetch (options, ee, simpledb) {
 function processDomain (domain, config, db, stream, callback) {
 
   function process (chunk, enc, callback) {
+    if (!chunk)
+      return callback()
     db.put(chunk.key, JSON.stringify(chunk.value), callback)
   }
 
